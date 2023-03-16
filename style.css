@@ -14,6 +14,28 @@ body {
   background-color: #31c6d4;
 }
 
+header {
+  height: 100px;
+  width: 560px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 32px;
+}
+
+header > button {
+  font-size: 24px;
+  padding: 5px 10px;
+}
+
+h2.yellow {
+  color: #ffff00;
+}
+
+h2.red {
+  color: #ff1e1e;
+}
+
 main {
   display: flex;
   flex-direction: column;
@@ -34,6 +56,14 @@ main > .buttons > button {
   width: 75px;
   height: 40px;
   border-radius: 15px;
+}
+
+main > .buttons > button.yellow {
+  background-color: #ffff00;
+}
+
+main > .buttons > button.red {
+  background-color: #ff1e1e;
 }
 
 main > .board {
@@ -65,10 +95,10 @@ main > .board {
   border: 2px solid #000;
 }
 
-.yellow {
+.holes > div.yellow {
   background-color: #ffff00;
 }
 
-.red {
+.holes > div.red {
   background-color: #ff1e1e;
 }
