@@ -1,10 +1,14 @@
 const board = [[], [], [], [], [], [], []];
+const colorChoice = ['yellow', 'red'];
 let player;
 const columns = 7;
 const holes = 6;
 const buttons = document.querySelector('section.buttons');
-const allColumns = document.querySelectorAll('.columns');
 const displayBoard = document.querySelector('.board');
+const header = document.querySelector('header');
+const winnerCount = 4;
+const startBtn = header.querySelector('button');
+let isStart = false;
 
 function buildBoard() {
   for (let i = 0; i < columns; i++) {
@@ -25,16 +29,14 @@ function buildBoard() {
 
 buildBoard();
 
-// function renderBoard() {
-//   allColumns.forEach((column) => {
-//     const index = column.dataset.index;
-//     const allPieces = column.querySelectorAll('.pieces');
-//     allPieces.forEach((piece) => {
-//       if (board[index][piece.dataset.index])
-//         piece.classList.add(board[index][piece.dataset.index]);
-//     });
-//   });
-// }
+function renderButtonsColor(color) {
+  color = color === colorChoice[0] ? colorChoice[1] : colorChoice[0];
+  const allButtons = buttons.querySelectorAll('button');
+  allButtons.forEach((btn) => {
+    btn.className = '';
+    btn.className = color;
+  });
+}
 
 function renderPiece(event) {
   const indexOfColumn = Number(event.target.dataset.index);
@@ -48,13 +50,20 @@ function renderPiece(event) {
 }
 
 function dropPieces(event) {
-  player = player === 'yellow' ? 'red' : 'yellow';
+  player = player === colorChoice[0] ? colorChoice[1] : colorChoice[0];
   const index = event.target.dataset.index;
   board[index].push(player);
   renderPiece(event);
+  renderButtonsColor(player);
 }
 
-buttons.addEventListener('click', dropPieces);
+function endGame(color) {
+  const h2 = document.createElement('h2');
+  h2.className = color;
+  h2.innerText = `${color.toUpperCase()} WIN!!!`;
+  header.appendChild(h2);
+  buttons.removeEventListener('click', dropPieces);
+}
 
 function checkWinner(column, hole, color) {
   let count = 1;
@@ -68,8 +77,8 @@ function checkWinner(column, hole, color) {
 
   //==================================================================
 
-  if (count === 4) {
-    console.log(color, 'win');
+  if (count === winnerCount) {
+    endGame(color);
     return;
   } else {
     count = 1;
@@ -88,8 +97,8 @@ function checkWinner(column, hole, color) {
 
   //==================================================================
 
-  if (count === 4) {
-    console.log(color, 'win');
+  if (count === winnerCount) {
+    endGame(color);
     return;
   } else {
     count = 1;
@@ -110,8 +119,8 @@ function checkWinner(column, hole, color) {
 
   //==================================================================
 
-  if (count === 4) {
-    console.log(color, 'win');
+  if (count === winnerCount) {
+    endGame(color);
     return;
   } else {
     count = 1;
@@ -132,10 +141,20 @@ function checkWinner(column, hole, color) {
 
   //============================================================================
 
-  if (count === 4) {
-    console.log(color, 'win');
+  if (count === winnerCount) {
+    endGame(color);
     return;
   } else {
     count = 1;
   }
 }
+
+function startGame() {
+  if (isStart) return;
+  player = colorChoice[Math.floor(Math.random() * colorChoice.length)];
+  renderButtonsColor(player);
+  isStart = true;
+  buttons.addEventListener('click', dropPieces);
+}
+
+startBtn.addEventListener('click', startGame);
