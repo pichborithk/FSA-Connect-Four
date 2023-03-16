@@ -54,8 +54,9 @@ function renderPiece(event) {
 }
 
 function dropPieces(event) {
-  player = player === colorChoice[0] ? colorChoice[1] : colorChoice[0];
   const index = event.target.dataset.index;
+  if (board[index].length >= holes) return;
+  player = player === colorChoice[0] ? colorChoice[1] : colorChoice[0];
   board[index].push(player);
   renderPiece(event);
   if (isPlaying) renderButtonsColor(player);
