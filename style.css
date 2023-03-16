@@ -37,10 +37,13 @@ h2.red {
 }
 
 main {
+  position: relative;
+  height: 650px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 main > .buttons {
@@ -48,7 +51,7 @@ main > .buttons {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 main > .buttons > button {
@@ -70,6 +73,8 @@ main > .board {
   display: flex;
   background-color: #f8ede3;
   border: 1px solid #000;
+  gap: 5px;
+  padding: 5px;
 }
 
 .columns {
@@ -77,28 +82,33 @@ main > .board {
   flex-direction: column-reverse;
   justify-content: center;
   align-items: center;
+  gap: 5px;
 }
 
 .holes {
   height: 80px;
   width: 80px;
-  border: 1px solid #000;
+  border: 2px solid #000;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 50%;
 }
 
 .holes > div {
+  transform: translateY(-720%);
+  height: 100%;
+  width: 100%;
   border-radius: 50%;
-  height: 90%;
-  width: 90%;
-  border: 2px solid #000;
+  transition: all 0.6s ease-in-out;
 }
 
 .holes > div.yellow {
   background-color: #ffff00;
+  transform: translateY(0);
 }
 
 .holes > div.red {
   background-color: #ff1e1e;
+  transform: translateY(0);
 }
