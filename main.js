@@ -8,7 +8,7 @@ const displayBoard = document.querySelector('.board');
 const header = document.querySelector('header');
 const winnerCount = 4;
 const startBtn = header.querySelector('button');
-let isStart = false;
+let isPlaying = false;
 
 function buildBoard() {
   for (let i = 0; i < columns; i++) {
@@ -54,7 +54,7 @@ function dropPieces(event) {
   const index = event.target.dataset.index;
   board[index].push(player);
   renderPiece(event);
-  renderButtonsColor(player);
+  if (isPlaying) renderButtonsColor(player);
 }
 
 function endGame(color) {
@@ -63,6 +63,7 @@ function endGame(color) {
   h2.innerText = `${color.toUpperCase()} WIN!!!`;
   header.appendChild(h2);
   buttons.removeEventListener('click', dropPieces);
+  isPlaying = false;
 }
 
 function checkWinner(column, hole, color) {
@@ -150,10 +151,10 @@ function checkWinner(column, hole, color) {
 }
 
 function startGame() {
-  if (isStart) return;
+  if (isPlaying) return;
   player = colorChoice[Math.floor(Math.random() * colorChoice.length)];
   renderButtonsColor(player);
-  isStart = true;
+  isPlaying = true;
   buttons.addEventListener('click', dropPieces);
 }
 
