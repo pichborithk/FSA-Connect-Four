@@ -1,4 +1,4 @@
-const board = [[], [], [], [], [], [], []];
+let board = [[], [], [], [], [], [], []];
 const colorChoice = ['yellow', 'red'];
 let player;
 const columns = 7;
@@ -7,7 +7,8 @@ const buttons = document.querySelector('section.buttons');
 const displayBoard = document.querySelector('.board');
 const header = document.querySelector('header');
 const winnerCount = 4;
-const startBtn = header.querySelector('button');
+const startBtn = header.querySelector('#start');
+const resetBtn = header.querySelector('#reset');
 let isPlaying = false;
 
 function buildBoard() {
@@ -54,8 +55,9 @@ function renderPiece(event) {
 }
 
 function dropPieces(event) {
+  if (event.target.tagName !== 'BUTTON') return;
   const index = event.target.dataset.index;
-  if (board[index].length >= holes) return;
+  if (board[index].length && board[index].length >= holes) return;
   player = player === colorChoice[0] ? colorChoice[1] : colorChoice[0];
   board[index].push(player);
   renderPiece(event);
@@ -200,4 +202,18 @@ function startGame() {
   buttons.addEventListener('click', dropPieces);
 }
 
+function resetGame() {
+  board = [[], [], [], [], [], [], []];
+  if (header.querySelector('h2')) header.querySelector('h2').remove();
+  const allPieces = displayBoard.querySelectorAll('.holes > div');
+  allPieces.forEach((piece) => (piece.className = ''));
+  const allButtons = buttons.querySelectorAll('button');
+  allButtons.forEach((btn) => {
+    btn.className = '';
+  });
+  buttons.removeEventListener('click', dropPieces);
+  isPlaying = false;
+}
+
 startBtn.addEventListener('click', startGame);
+resetBtn.addEventListener('click', resetGame);
