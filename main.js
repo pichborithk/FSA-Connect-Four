@@ -41,12 +41,16 @@ function renderButtonsColor(color) {
 function renderPiece(event) {
   const indexOfColumn = Number(event.target.dataset.index);
   const indexOfHole = board[indexOfColumn].length - 1;
-  const hole = document.querySelector(
-    `.columns[data-index='${indexOfColumn}'] > .holes[data-index='${indexOfHole}']`
+  const piece = displayBoard.querySelector(
+    `.columns[data-index='${indexOfColumn}'] > .holes[data-index='${indexOfHole}'] > div`
   );
-  const piece = hole.querySelector('div');
   piece.className = board[indexOfColumn][indexOfHole];
-  checkWinner(indexOfColumn, indexOfHole, board[indexOfColumn][indexOfHole]);
+  checkWinner(
+    indexOfColumn,
+    indexOfHole,
+    board[indexOfColumn][indexOfHole],
+    piece
+  );
 }
 
 function dropPieces(event) {
@@ -66,13 +70,18 @@ function endGame(color) {
   isPlaying = false;
 }
 
-function checkWinner(column, hole, color) {
+function checkWinner(column, hole, color, currentPiece) {
   let count = 1;
   //   console.log(column, hole, color);
   // ==============***** Vertical Condition *****=====================
 
+  currentPiece.classList.add('winner');
   for (let i = hole - 1; i >= 0; i--) {
     if (board[column][i] !== color) break;
+    const piece = displayBoard.querySelector(
+      `[data-index='${column}'] > [data-index='${i}'] > div`
+    );
+    piece.classList.add('winner');
     count++;
   }
 
@@ -82,17 +91,27 @@ function checkWinner(column, hole, color) {
     endGame(color);
     return;
   } else {
+    const allPieces = displayBoard.querySelectorAll('div.winner');
+    allPieces.forEach((piece) => piece.classList.remove('winner'));
     count = 1;
   }
 
   // ==============***** Horizontal Condition *****===================
-
+  currentPiece.classList.add('winner');
   for (let i = column + 1; i < board.length; i++) {
     if (board[i][hole] !== color) break;
+    const piece = displayBoard.querySelector(
+      `[data-index='${i}'] > [data-index='${hole}'] > div`
+    );
+    piece.classList.add('winner');
     count++;
   }
   for (let i = column - 1; i >= 0; i--) {
     if (board[i][hole] !== color) break;
+    const piece = displayBoard.querySelector(
+      `[data-index='${i}'] > [data-index='${hole}'] > div`
+    );
+    piece.classList.add('winner');
     count++;
   }
 
@@ -102,19 +121,29 @@ function checkWinner(column, hole, color) {
     endGame(color);
     return;
   } else {
+    const allPieces = displayBoard.querySelectorAll('div.winner');
+    allPieces.forEach((piece) => piece.classList.remove('winner'));
     count = 1;
   }
 
   // ==============***** left to right Diagonal Condition *****===================
-
+  currentPiece.classList.add('winner');
   for (let i = 1; i < 4; i++) {
     if (column + i > 6) break;
     if (board[column + i][hole + i] !== color) break;
+    const piece = displayBoard.querySelector(
+      `[data-index='${column + i}'] > [data-index='${hole + i}'] > div`
+    );
+    piece.classList.add('winner');
     count++;
   }
   for (let i = 1; i < 4; i++) {
     if (column - i < 0) break;
     if (board[column - i][hole - i] !== color) break;
+    const piece = displayBoard.querySelector(
+      `[data-index='${column - i}'] > [data-index='${hole - i}'] > div`
+    );
+    piece.classList.add('winner');
     count++;
   }
 
@@ -124,19 +153,29 @@ function checkWinner(column, hole, color) {
     endGame(color);
     return;
   } else {
+    const allPieces = displayBoard.querySelectorAll('div.winner');
+    allPieces.forEach((piece) => piece.classList.remove('winner'));
     count = 1;
   }
 
   // ==============***** right to left Diagonal Condition *****===================
-
+  currentPiece.classList.add('winner');
   for (let i = 1; i < 4; i++) {
     if (column - i < 0) break;
     if (board[column - i][hole + i] !== color) break;
+    const piece = displayBoard.querySelector(
+      `[data-index='${column - i}'] > [data-index='${hole + i}'] > div`
+    );
+    piece.classList.add('winner');
     count++;
   }
   for (let i = 1; i < 4; i++) {
     if (column + i > 6) break;
     if (board[column + i][hole - i] !== color) break;
+    const piece = displayBoard.querySelector(
+      `[data-index='${column + i}'] > [data-index='${hole - i}'] > div`
+    );
+    piece.classList.add('winner');
     count++;
   }
 
@@ -146,6 +185,8 @@ function checkWinner(column, hole, color) {
     endGame(color);
     return;
   } else {
+    const allPieces = displayBoard.querySelectorAll('div.winner');
+    allPieces.forEach((piece) => piece.classList.remove('winner'));
     count = 1;
   }
 }
